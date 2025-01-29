@@ -29,5 +29,3 @@ class ShowAssetTreeEvent extends PanelViewEvent {
   final String assetId;
   ShowAssetTreeEvent({required this.assetId});
 }
-
-class HideAllAssetTreeEvent extends PanelViewEvent {}

@@ -7,18 +7,24 @@ class LocationNodeWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Image.asset(
-          "assets/images/location.png",
-          width: 20,
-          height: 20,
-        ),
-        const SizedBox(
-          width: 10,
-        ),
-        Text(location.name),
-      ],
+    return SizedBox(
+      height: 40,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Image.asset(
+            "assets/images/location.png",
+            width: 20,
+            height: 20,
+          ),
+          const SizedBox(
+            width: 10,
+          ),
+          Text(
+            location.name,
+          ),
+        ],
+      ),
     );
   }
 }

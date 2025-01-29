@@ -7,18 +7,22 @@ class AssetNodeWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Image.asset(
-          "assets/images/asset.png",
-          width: 20,
-          height: 20,
-        ),
-        const SizedBox(
-          width: 10,
-        ),
-        Text(asset.name),
-      ],
+    return SizedBox(
+      height: 40,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Image.asset(
+            "assets/images/asset.png",
+            width: 20,
+            height: 20,
+          ),
+          const SizedBox(
+            width: 10,
+          ),
+          Text(asset.name),
+        ],
+      ),
     );
   }
 }

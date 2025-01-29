@@ -7,28 +7,32 @@ class ComponentNodeWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Image.asset(
-          "assets/images/component.png",
-          width: 20,
-          height: 20,
-        ),
-        const SizedBox(
-          width: 10,
-        ),
-        Text(component.name),
-        const SizedBox(
-          width: 10,
-        ),
-        if (component.status == 'alert')
-          const Icon(
-            Icons.circle,
-            color: Colors.red,
-            size: 15,
+    return SizedBox(
+      height: 40,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Image.asset(
+            "assets/images/component.png",
+            width: 20,
+            height: 20,
           ),
-        if (component.sensorType == 'energy') const Icon(Icons.bolt, color: Colors.yellow),
-      ],
+          const SizedBox(
+            width: 10,
+          ),
+          Text(component.name),
+          const SizedBox(
+            width: 10,
+          ),
+          if (component.status == 'alert')
+            const Icon(
+              Icons.circle,
+              color: Colors.red,
+              size: 15,
+            ),
+          if (component.sensorType == 'energy') const Icon(Icons.bolt, color: Colors.yellow),
+        ],
+      ),
     );
   }
 }

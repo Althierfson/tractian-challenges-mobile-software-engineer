@@ -50,21 +50,23 @@ class PanelViewBloc extends Bloc<PanelViewEvent, PanelViewState> {
         emit(PanelViewSuccessState(tree: newTree, hideTree: hideTree));
         isFilteredByStatus = true;
       } else {
-        emit(PanelViewSuccessState(tree: _assetTree!, hideTree: hideTree));
+        _hideAllTree(_assetTree!);
+        emit(PanelViewSuccessState(tree: _assetTree, hideTree: hideTree));
         isFilteredByStatus = false;
       }
     });
 
-    on<FilterByAssetTypeEvent>((event, emit) {
+    on<FilterByAssetTypeEvent>((event, emit) async {
       isFilteredByStatus = false;
       allHidden = false;
       hideTree = [];
       if (state is PanelViewSuccessState && !isFilteredByAssetType) {
-        final newTree = _filterByAssetType(_assetTree!, event.assetType);
+        final newTree = _filterByAssetType({'tree': _assetTree, 'assetType': event.assetType});
         emit(PanelViewSuccessState(tree: newTree, hideTree: hideTree));
         isFilteredByAssetType = true;
       } else {
-        emit(PanelViewSuccessState(tree: _assetTree!, hideTree: hideTree));
+        _hideAllTree(_assetTree!);
+        emit(PanelViewSuccessState(tree: _assetTree, hideTree: hideTree));
         isFilteredByAssetType = false;
       }
     });
@@ -81,59 +83,66 @@ class PanelViewBloc extends Bloc<PanelViewEvent, PanelViewState> {
         hideTree = newHideTree;
       }
     });
-
-    on<HideAllAssetTreeEvent>((event, emit) {
-      if (state is PanelViewSuccessState) {
-        if (allHidden) {
-          hideTree = [];
-          allHidden = false;
-        } else {
-          hideTree = [];
-          _hideAllTree(_assetTree!);
-          allHidden = true;
-        }
-        emit(PanelViewSuccessState(tree: _assetTree!, hideTree: hideTree));
-      }
-    });
   }
 
   AssetTree _searchTree(AssetTree tree, String query) {
-    final newTree = AssetTree(tree.value);
+    final normalizedQuery = query.toLowerCase();
+
+    final filteredTree = AssetTree(tree.value);
+
     for (var child in tree.children) {
-      final newChild = _searchTree(child, query);
-      if (newChild.children.isNotEmpty ||
-          newChild.name.toLowerCase().contains(query.toLowerCase())) {
-        newTree.addChild(newChild);
+      final filteredChild = _searchTree(child, query);
+
+      final isMatchingNode = filteredChild.value is ComponentNode &&
+          (filteredChild.value as ComponentNode).name.toLowerCase().contains(normalizedQuery);
+
+      if (isMatchingNode || filteredChild.children.isNotEmpty) {
+        filteredTree.addChild(filteredChild);
       }
     }
-    return newTree;
+
+    return filteredTree;
   }
 
   AssetTree _filterByStatus(AssetTree tree, String status) {
-    final newTree = AssetTree(tree.value);
+    final normalizedStatus = status.toLowerCase();
+
+    final filteredTree = AssetTree(tree.value);
+
     for (var child in tree.children) {
-      final newChild = _filterByStatus(child, status);
-      if (newChild.children.isNotEmpty ||
-          newChild.value is ComponentNode &&
-              (newChild.value as ComponentNode).status.toLowerCase() == status.toLowerCase()) {
-        newTree.addChild(newChild);
+      final filteredChild = _filterByStatus(child, normalizedStatus);
+
+      final isMatchingNode = filteredChild.value is ComponentNode &&
+          (filteredChild.value as ComponentNode).status.toLowerCase() == normalizedStatus;
+
+      if (isMatchingNode || filteredChild.children.isNotEmpty) {
+        filteredTree.addChild(filteredChild);
       }
     }
-    return newTree;
+
+    return filteredTree;
   }
 
-  AssetTree _filterByAssetType(AssetTree tree, String assetType) {
-    final newTree = AssetTree(tree.value);
+  AssetTree _filterByAssetType(Map<String, dynamic> args) {
+    AssetTree tree = args['tree'];
+    String assetType = args['assetType'];
+
+    final normalizedType = assetType.toLowerCase();
+
+    final filteredTree = AssetTree(tree.value);
+
     for (var child in tree.children) {
-      final newChild = _filterByAssetType(child, assetType);
-      if (newChild.children.isNotEmpty ||
-          newChild.value is ComponentNode &&
-              (newChild.value as ComponentNode).sensorType.toLowerCase() ==
-                  assetType.toLowerCase()) {
-        newTree.addChild(newChild);
+      final filteredChild = _filterByAssetType({'tree': child, 'assetType': assetType});
+
+      final isMatchingNode = filteredChild.value is ComponentNode &&
+          (filteredChild.value as ComponentNode).sensorType.toLowerCase() == normalizedType;
+
+      if (isMatchingNode || filteredChild.children.isNotEmpty) {
+        filteredTree.addChild(filteredChild);
       }
     }
-    return newTree;
+
+    return filteredTree;
   }
 
   void _hideAllTree(AssetTree tree) {

@@ -95,24 +95,10 @@ class _PanelViewPageState extends State<PanelViewPage> {
                       ],
                     ),
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Text(_bloc.allHidden ? "Mostrar todos" : "Ocultar todos"),
-                      Checkbox(
-                          value: _bloc.allHidden,
-                          onChanged: (value) {
-                            _bloc.add(HideAllAssetTreeEvent());
-                          }),
-                      const SizedBox(width: 8),
-                    ],
-                  ),
                   Expanded(
-                    child: Container(
-                        decoration: const BoxDecoration(color: Colors.white),
-                        child: _buildPanelTree(state.tree, state.hideTree, (id) {
-                          _bloc.add(ShowAssetTreeEvent(assetId: id));
-                        })),
+                    child: _buildPanelTree(state.tree, state.hideTree, (id) {
+                      _bloc.add(ShowAssetTreeEvent(assetId: id));
+                    }),
                   ),
                 ],
               );
@@ -124,22 +110,19 @@ class _PanelViewPageState extends State<PanelViewPage> {
   }
 
   Widget _buildPanelTree(AssetTree treeAsset, List<String> hideTree, Function(String) hide) {
-    if (treeAsset.name == "Root") {
-      return ListView.builder(
-          itemCount: treeAsset.children.length,
-          itemBuilder: (context, index) {
-            return _buildPanelTree(treeAsset.children[index], hideTree, hide);
-          });
-    }
-
-    return RepaintBoundary(
-      child: NodeWideget(
-        asset: treeAsset,
-        hideChildren: hideTree.contains(treeAsset.id),
-        onShowAssetTree: hide,
-        children: treeAsset.children.map((e) => _buildPanelTree(e, hideTree, hide)).toList(),
-      ),
-    );
+    return ListView.builder(
+        itemCount: treeAsset.children.length,
+        itemBuilder: (context, index) {
+          return RepaintBoundary(
+            key: UniqueKey(),
+            child: NodeWideget(
+              asset: treeAsset.children[index],
+              hideTree: hideTree,
+              onShowAssetTree: hide,
+              notFirst: false,
+            ),
+          );
+        });
   }
 
   Widget _buildTextButtonIcon(
