@@ -9,15 +9,10 @@ import 'package:flutter/material.dart';
 
 class NodeWideget extends StatefulWidget {
   final AssetTree asset;
-  final List<String> hideTree;
-  final Function(String)? onShowAssetTree;
+  final List<String> showChildrenNode;
   final bool notFirst;
   const NodeWideget(
-      {super.key,
-      required this.asset,
-      this.hideTree = const [],
-      this.onShowAssetTree,
-      this.notFirst = true});
+      {super.key, required this.asset, this.showChildrenNode = const [], this.notFirst = true});
 
   @override
   State<NodeWideget> createState() => _NodeWidegetState();
@@ -28,7 +23,7 @@ class _NodeWidegetState extends State<NodeWideget> {
 
   @override
   void initState() {
-    showNode = !widget.hideTree.contains(widget.asset.id);
+    showNode = widget.showChildrenNode.contains(widget.asset.id);
     super.initState();
   }
 
@@ -66,24 +61,54 @@ class _NodeWidegetState extends State<NodeWideget> {
                 _buildNode(widget.asset),
               ],
             )),
+        // if (showNode)
+        //   for (final child in widget.asset.children)
+        //     SingleChildScrollView(
+        //       scrollDirection: Axis.horizontal,
+        //       child: Padding(
+        //         padding: const EdgeInsets.only(left: 12),
+        //         child: Container(
+        //           padding: const EdgeInsets.only(left: 10),
+        //           decoration: const BoxDecoration(
+        //             border: Border(
+        //               left: BorderSide(color: Color(0xffd9d9d9), width: 1),
+        //             ),
+        //           ),
+        //           child: NodeWideget(
+        //             asset: child,
+        //             hideTree: widget.hideTree,
+        //             onShowAssetTree: widget.onShowAssetTree,
+        //           ),
+        //         ),
+        //       ),
+        //     ),
         if (showNode)
-          for (final child in widget.asset.children)
-            Padding(
-              padding: const EdgeInsets.only(left: 12),
-              child: Container(
-                padding: const EdgeInsets.only(left: 10),
-                decoration: const BoxDecoration(
-                  border: Border(
-                    left: BorderSide(color: Color(0xffd9d9d9), width: 1),
+          ListView.builder(
+            itemCount: widget.asset.children.length,
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemBuilder: (context, index) {
+              final child = widget.asset.children[index];
+              return Padding(
+                padding: const EdgeInsets.only(left: 12),
+                child: Container(
+                  padding: const EdgeInsets.only(left: 10),
+                  decoration: const BoxDecoration(
+                    border: Border(
+                      left: BorderSide(color: Color(0xffd9d9d9), width: 1),
+                    ),
+                  ),
+                  child: RepaintBoundary(
+                    key: UniqueKey(),
+                    child: NodeWideget(
+                      asset: child,
+                      showChildrenNode: widget.showChildrenNode,
+                    ),
                   ),
                 ),
-                child: NodeWideget(
-                  asset: child,
-                  hideTree: widget.hideTree,
-                  onShowAssetTree: widget.onShowAssetTree,
-                ),
-              ),
-            ),
+              );
+            },
+          )
       ],
     );
   }

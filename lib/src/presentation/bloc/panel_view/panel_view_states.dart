@@ -19,9 +19,9 @@ class PanelViewErrorState extends PanelViewState {
 
 class PanelViewSuccessState extends PanelViewState {
   final AssetTree tree;
-  final List<String> hideTree;
-  PanelViewSuccessState({required this.tree, required this.hideTree});
+  final List<String> showChildrenNode;
+  PanelViewSuccessState({required this.tree, required this.showChildrenNode});
 
   @override
-  List<Object?> get props => [tree, hideTree];
+  List<Object?> get props => [tree, showChildrenNode];
 }

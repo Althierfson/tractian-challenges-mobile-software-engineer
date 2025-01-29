@@ -96,9 +96,7 @@ class _PanelViewPageState extends State<PanelViewPage> {
                     ),
                   ),
                   Expanded(
-                    child: _buildPanelTree(state.tree, state.hideTree, (id) {
-                      _bloc.add(ShowAssetTreeEvent(assetId: id));
-                    }),
+                    child: _buildPanelTree(state.tree, state.showChildrenNode),
                   ),
                 ],
               );
@@ -109,7 +107,7 @@ class _PanelViewPageState extends State<PanelViewPage> {
     );
   }
 
-  Widget _buildPanelTree(AssetTree treeAsset, List<String> hideTree, Function(String) hide) {
+  Widget _buildPanelTree(AssetTree treeAsset, List<String> showChildrenNode) {
     return ListView.builder(
         itemCount: treeAsset.children.length,
         itemBuilder: (context, index) {
@@ -117,8 +115,7 @@ class _PanelViewPageState extends State<PanelViewPage> {
             key: UniqueKey(),
             child: NodeWideget(
               asset: treeAsset.children[index],
-              hideTree: hideTree,
-              onShowAssetTree: hide,
+              showChildrenNode: showChildrenNode,
               notFirst: false,
             ),
           );

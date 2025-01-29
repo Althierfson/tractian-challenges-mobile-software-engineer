@@ -12,10 +12,4 @@ class AssetTree {
   void addChild(AssetTree child) {
     children.add(child);
   }
-
-  void depthFirstTraversal() {
-    for (var child in children) {
-      child.depthFirstTraversal();
-    }
-  }
 }

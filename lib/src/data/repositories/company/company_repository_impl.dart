@@ -70,6 +70,8 @@ class CompanyRepositoryImpl implements CompanyRepository {
     for (var asset in assets) {
       if (nodeMap.containsKey(asset.locationId)) {
         nodeMap[asset.locationId]?.addChild(AssetTree(asset.toNode()));
+      } else {
+        root.addChild(AssetTree(asset.toNode()));
       }
     }
 

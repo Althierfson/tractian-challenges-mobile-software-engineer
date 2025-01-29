@@ -15,7 +15,7 @@ class PanelViewBloc extends Bloc<PanelViewEvent, PanelViewState> {
   bool isFilteredByStatus = false;
   bool isFilteredByAssetType = false;
 
-  List<String> hideTree = [];
+  List<String> showChildrenNode = [];
 
   bool allHidden = false;
 
@@ -24,34 +24,39 @@ class PanelViewBloc extends Bloc<PanelViewEvent, PanelViewState> {
       emit(PanelViewLoadingState());
       await fetchAssetsCompanyUsecase(FetchAssetsCompanyParams(event.companyId))
           .then((result) => result.fold((l) => emit(PanelViewErrorState(message: l.message)), (r) {
-                _hideAllTree(r);
-                emit(PanelViewSuccessState(tree: r, hideTree: hideTree));
+                // _hideAllTree(r);
+                emit(PanelViewSuccessState(tree: r, showChildrenNode: showChildrenNode));
                 _assetTree = r;
               }));
     });
 
     on<SearchAssetsEvent>((event, emit) {
       if (state is PanelViewSuccessState) {
-        hideTree = [];
         allHidden = false;
         isFilteredByAssetType = false;
         isFilteredByStatus = false;
-        final newTree = _searchTree(_assetTree!, event.query);
-        emit(PanelViewSuccessState(tree: newTree, hideTree: hideTree));
+        if (event.query.isNotEmpty) {
+          final newTree = _searchTree(_assetTree!, event.query);
+          _showAllTree(newTree);
+          emit(PanelViewSuccessState(tree: newTree, showChildrenNode: showChildrenNode));
+        } else {
+          _hideAllTree(_assetTree!);
+          emit(PanelViewSuccessState(tree: _assetTree, showChildrenNode: showChildrenNode));
+        }
       }
     });
 
     on<FilterByStatusEvent>((event, emit) {
       isFilteredByAssetType = false;
       allHidden = false;
-      hideTree = [];
       if (state is PanelViewSuccessState && !isFilteredByStatus) {
         final newTree = _filterByStatus(_assetTree!, event.status);
-        emit(PanelViewSuccessState(tree: newTree, hideTree: hideTree));
+        _showAllTree(newTree);
+        emit(PanelViewSuccessState(tree: newTree, showChildrenNode: showChildrenNode));
         isFilteredByStatus = true;
       } else {
         _hideAllTree(_assetTree!);
-        emit(PanelViewSuccessState(tree: _assetTree, hideTree: hideTree));
+        emit(PanelViewSuccessState(tree: _assetTree, showChildrenNode: showChildrenNode));
         isFilteredByStatus = false;
       }
     });
@@ -59,42 +64,34 @@ class PanelViewBloc extends Bloc<PanelViewEvent, PanelViewState> {
     on<FilterByAssetTypeEvent>((event, emit) async {
       isFilteredByStatus = false;
       allHidden = false;
-      hideTree = [];
       if (state is PanelViewSuccessState && !isFilteredByAssetType) {
-        final newTree = _filterByAssetType({'tree': _assetTree, 'assetType': event.assetType});
-        emit(PanelViewSuccessState(tree: newTree, hideTree: hideTree));
+        final newTree = _filterByAssetType(_assetTree!, event.assetType);
+        _showAllTree(newTree);
+        emit(PanelViewSuccessState(tree: newTree, showChildrenNode: showChildrenNode));
         isFilteredByAssetType = true;
       } else {
         _hideAllTree(_assetTree!);
-        emit(PanelViewSuccessState(tree: _assetTree, hideTree: hideTree));
+        emit(PanelViewSuccessState(tree: _assetTree, showChildrenNode: showChildrenNode));
         isFilteredByAssetType = false;
-      }
-    });
-
-    on<ShowAssetTreeEvent>((event, emit) {
-      if (state is PanelViewSuccessState) {
-        final newHideTree = List<String>.from(hideTree);
-        if (hideTree.contains(event.assetId)) {
-          newHideTree.remove(event.assetId);
-        } else {
-          newHideTree.add(event.assetId);
-        }
-        emit(PanelViewSuccessState(tree: _assetTree!, hideTree: newHideTree));
-        hideTree = newHideTree;
       }
     });
   }
 
   AssetTree _searchTree(AssetTree tree, String query) {
+    if (query.isEmpty) return tree;
     final normalizedQuery = query.toLowerCase();
 
     final filteredTree = AssetTree(tree.value);
 
+    if (filteredTree.value.name.toLowerCase().contains(normalizedQuery)) {
+      filteredTree.children = tree.children;
+      return filteredTree;
+    }
+
     for (var child in tree.children) {
       final filteredChild = _searchTree(child, query);
 
-      final isMatchingNode = filteredChild.value is ComponentNode &&
-          (filteredChild.value as ComponentNode).name.toLowerCase().contains(normalizedQuery);
+      final isMatchingNode = filteredChild.value.name.toLowerCase().contains(normalizedQuery);
 
       if (isMatchingNode || filteredChild.children.isNotEmpty) {
         filteredTree.addChild(filteredChild);
@@ -123,16 +120,13 @@ class PanelViewBloc extends Bloc<PanelViewEvent, PanelViewState> {
     return filteredTree;
   }
 
-  AssetTree _filterByAssetType(Map<String, dynamic> args) {
-    AssetTree tree = args['tree'];
-    String assetType = args['assetType'];
-
+  AssetTree _filterByAssetType(AssetTree tree, String assetType) {
     final normalizedType = assetType.toLowerCase();
 
     final filteredTree = AssetTree(tree.value);
 
     for (var child in tree.children) {
-      final filteredChild = _filterByAssetType({'tree': child, 'assetType': assetType});
+      final filteredChild = _filterByAssetType(child, assetType);
 
       final isMatchingNode = filteredChild.value is ComponentNode &&
           (filteredChild.value as ComponentNode).sensorType.toLowerCase() == normalizedType;
@@ -146,9 +140,13 @@ class PanelViewBloc extends Bloc<PanelViewEvent, PanelViewState> {
   }
 
   void _hideAllTree(AssetTree tree) {
-    hideTree.add(tree.id);
+    showChildrenNode = [];
+  }
+
+  void _showAllTree(AssetTree tree) {
+    showChildrenNode.add(tree.value.id);
     for (var child in tree.children) {
-      _hideAllTree(child);
+      _showAllTree(child);
     }
   }
 }

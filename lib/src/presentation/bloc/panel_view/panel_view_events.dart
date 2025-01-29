@@ -24,8 +24,3 @@ class FilterByAssetTypeEvent extends PanelViewEvent {
   final String assetType;
   FilterByAssetTypeEvent({required this.assetType});
 }
-
-class ShowAssetTreeEvent extends PanelViewEvent {
-  final String assetId;
-  ShowAssetTreeEvent({required this.assetId});
-}
