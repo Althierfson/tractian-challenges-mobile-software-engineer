@@ -25,7 +25,12 @@ Este projeto é um aplicativo desenvolvido em Flutter que exibe unidades retorna
 
 ### 📷 Imagens do App
 
-> *Adicione aqui prints do app para ilustrar as telas e funcionalidades.*
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/c14c62ca-4639-40e1-8dca-7b845fd499cd", width="250px"/>
+  <img src="https://github.com/user-attachments/assets/dbb64ab3-f5bb-4715-b6fb-976d83cfb7aa", width="250px"/>
+  <img src="https://github.com/user-attachments/assets/06f2b882-ee71-45b5-baba-566c4710bdd6", width="250px"/>
+  <img src="https://github.com/user-attachments/assets/6a220e00-9144-4421-a427-52696fb38c74", width="250px"/>
+</div>
 
 ## ⚙️ Parte Técnica
 
@@ -65,6 +70,7 @@ Caso tivesse mais tempo para desenvolver, algumas melhorias que implementaria in
 ## 🔗 Contato & Projetos Relacionados
 
 - **Meu LinkedIn**: [🔗 linkedin.com](https://www.linkedin.com/in/althierfson/)
+- **Meu github**: [🔗 github.com](https://github.com/Althierfson)
 - **Outros Projetos Interessantes**:
   - [🔗 Meu Canal no Youtube](https://www.youtube.com/@cajucode)
 
