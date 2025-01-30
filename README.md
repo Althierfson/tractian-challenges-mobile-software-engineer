@@ -5,7 +5,7 @@ Este repositório contém a minha solução para o desafio técnico da Tractian.
 ## 📽️ Demonstração do App
 
 Assista ao vídeo demonstrativo do app e suas funcionalidades no YouTube:
-[🔗 Link para o vídeo](https://youtu.be/6jf146GBFPM)
+[🔗 Link para o vídeo](https://youtu.be/3-zvvUQPNcc)
 
 APK-profile para download:
 [🔗 Link para apk](https://drive.google.com/file/d/15yNbcC5yp_BR2LL50u--2SiCPAH-rZFe/view?usp=sharing)
