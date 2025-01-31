@@ -111,13 +111,11 @@ class _PanelViewPageState extends State<PanelViewPage> {
     return ListView.builder(
         itemCount: treeAsset.children.length,
         itemBuilder: (context, index) {
-          return RepaintBoundary(
+          return NodeWideget(
             key: UniqueKey(),
-            child: NodeWideget(
-              asset: treeAsset.children[index],
-              showChildrenNode: showChildrenNode,
-              notFirst: false,
-            ),
+            asset: treeAsset.children[index],
+            showChildrenNode: showChildrenNode,
+            notFirst: false,
           );
         });
   }

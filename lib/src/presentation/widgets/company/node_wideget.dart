@@ -61,27 +61,6 @@ class _NodeWidegetState extends State<NodeWideget> {
                 _buildNode(widget.asset),
               ],
             )),
-        // if (showNode)
-        //   for (final child in widget.asset.children)
-        //     SingleChildScrollView(
-        //       scrollDirection: Axis.horizontal,
-        //       child: Padding(
-        //         padding: const EdgeInsets.only(left: 12),
-        //         child: Container(
-        //           padding: const EdgeInsets.only(left: 10),
-        //           decoration: const BoxDecoration(
-        //             border: Border(
-        //               left: BorderSide(color: Color(0xffd9d9d9), width: 1),
-        //             ),
-        //           ),
-        //           child: NodeWideget(
-        //             asset: child,
-        //             hideTree: widget.hideTree,
-        //             onShowAssetTree: widget.onShowAssetTree,
-        //           ),
-        //         ),
-        //       ),
-        //     ),
         if (showNode)
           ListView.builder(
             itemCount: widget.asset.children.length,
@@ -98,12 +77,10 @@ class _NodeWidegetState extends State<NodeWideget> {
                       left: BorderSide(color: Color(0xffd9d9d9), width: 1),
                     ),
                   ),
-                  child: RepaintBoundary(
+                  child: NodeWideget(
                     key: UniqueKey(),
-                    child: NodeWideget(
-                      asset: child,
-                      showChildrenNode: widget.showChildrenNode,
-                    ),
+                    asset: child,
+                    showChildrenNode: widget.showChildrenNode,
                   ),
                 ),
               );
