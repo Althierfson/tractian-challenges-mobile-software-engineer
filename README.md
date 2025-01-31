@@ -1,14 +1,14 @@
 # Tractian Challenges Mobile Software Engineer
 
-Este repositório contém a minha solução para o desafio técnico da Tractian.
+Este repositório contém a minha solução para o [desafio técnico da Tractian](https://github.com/tractian/challenges/blob/main/mobile/README.md).
 
 ## 📽️ Demonstração do App
 
 Assista ao vídeo demonstrativo do app e suas funcionalidades no YouTube:
-[🔗 Link para o vídeo](https://youtu.be/3-zvvUQPNcc)
+[🔗 Link para o vídeo](https://youtu.be/IolfGsGvjWE)
 
 APK-profile para download:
-[🔗 Link para apk](https://drive.google.com/file/d/15yNbcC5yp_BR2LL50u--2SiCPAH-rZFe/view?usp=sharing)
+[🔗 Link para apk](https://drive.google.com/file/d/1Utajk7hAp5s_OGauimbKDVj1PtkZJfQ0/view?usp=sharing)
 
 ## 📌 Sobre o Projeto
 
@@ -26,10 +26,10 @@ Este projeto é um aplicativo desenvolvido em Flutter que exibe unidades retorna
 ### 📷 Imagens do App
 
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/c14c62ca-4639-40e1-8dca-7b845fd499cd", width="250px"/>
-  <img src="https://github.com/user-attachments/assets/dbb64ab3-f5bb-4715-b6fb-976d83cfb7aa", width="250px"/>
-  <img src="https://github.com/user-attachments/assets/06f2b882-ee71-45b5-baba-566c4710bdd6", width="250px"/>
-  <img src="https://github.com/user-attachments/assets/6a220e00-9144-4421-a427-52696fb38c74", width="250px"/>
+  <img src="https://github.com/user-attachments/assets/bd844fd7-b9b8-4762-a750-f6d9a48f9b32", width="250px"/>
+  <img src="https://github.com/user-attachments/assets/5210750d-e6cc-41a6-b441-393bbce2bdc0", width="250px"/>
+  <img src="https://github.com/user-attachments/assets/9bcc3ec4-c98f-4e8a-a774-e60422516cef", width="250px"/>
+  <img src="https://github.com/user-attachments/assets/1ec8a062-faf5-45fb-a893-f6d2a4767289", width="250px"/>
 </div>
 
 ## ⚙️ Parte Técnica

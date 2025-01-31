@@ -101,23 +101,32 @@ class _PanelViewPageState extends State<PanelViewPage> {
                 ],
               );
             }
-
             return const SizedBox();
           }),
     );
   }
 
   Widget _buildPanelTree(AssetTree treeAsset, List<String> showChildrenNode) {
-    return ListView.builder(
-        itemCount: treeAsset.children.length,
-        itemBuilder: (context, index) {
-          return NodeWideget(
-            key: UniqueKey(),
-            asset: treeAsset.children[index],
-            showChildrenNode: showChildrenNode,
-            notFirst: false,
-          );
-        });
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: SizedBox(
+        width: 600,
+        child: Padding(
+          padding: const EdgeInsets.only(right: 16.0),
+          child: ListView.builder(
+              itemCount: treeAsset.children.length,
+              shrinkWrap: true,
+              itemBuilder: (context, index) {
+                return NodeWideget(
+                  key: UniqueKey(),
+                  asset: treeAsset.children[index],
+                  showChildrenNode: showChildrenNode,
+                  notFirst: false,
+                );
+              }),
+        ),
+      ),
+    );
   }
 
   Widget _buildTextButtonIcon(

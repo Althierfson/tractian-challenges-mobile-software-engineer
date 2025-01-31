@@ -40,24 +40,18 @@ class _NodeWidegetState extends State<NodeWideget> {
             },
             child: Row(
               children: [
+                Container(
+                  width: 20,
+                  height: 1,
+                  color: widget.notFirst ? const Color(0xffd9d9d9) : null,
+                ),
                 if (widget.asset.children.isNotEmpty)
                   showNode ? const Icon(Icons.arrow_drop_down) : const Icon(Icons.arrow_right),
                 if (widget.asset.children.isEmpty)
-                  Padding(
-                    padding: const EdgeInsets.only(left: 10),
-                    child: Container(
-                      width: 14,
-                      height: 15,
-                      decoration: BoxDecoration(
-                        border: widget.notFirst
-                            ? const Border(
-                                left: BorderSide(color: Color(0xffd9d9d9), width: 1),
-                                bottom: BorderSide(color: Color(0xffd9d9d9), width: 1))
-                            : null,
-                      ),
-                    ),
+                  const SizedBox(
+                    width: 23,
+                    height: 15,
                   ),
-                const SizedBox(width: 10),
                 _buildNode(widget.asset),
               ],
             )),
@@ -69,9 +63,8 @@ class _NodeWidegetState extends State<NodeWideget> {
             itemBuilder: (context, index) {
               final child = widget.asset.children[index];
               return Padding(
-                padding: const EdgeInsets.only(left: 12),
+                padding: const EdgeInsets.only(left: 53),
                 child: Container(
-                  padding: const EdgeInsets.only(left: 10),
                   decoration: const BoxDecoration(
                     border: Border(
                       left: BorderSide(color: Color(0xffd9d9d9), width: 1),

@@ -60,18 +60,24 @@ class CompanyRepositoryImpl implements CompanyRepository {
     }
 
     for (var location in locations) {
-      if (location.parentId != null) {
-        nodeMap[location.parentId]?.addChild(nodeMap[location.id]!);
+      if (location.parentId != null && nodeMap.containsKey(location.parentId)) {
+        nodeMap[location.parentId]!.addChild(nodeMap[location.id]!);
       } else {
         root.addChild(nodeMap[location.id]!);
       }
     }
 
     for (var asset in assets) {
-      if (nodeMap.containsKey(asset.locationId)) {
-        nodeMap[asset.locationId]?.addChild(AssetTree(asset.toNode()));
+      nodeMap[asset.id] = AssetTree(asset.toNode());
+    }
+
+    for (var asset in assets) {
+      if (asset.locationId != null && nodeMap.containsKey(asset.locationId)) {
+        nodeMap[asset.locationId]!.addChild(nodeMap[asset.id]!);
+      } else if (asset.parentId != null && nodeMap.containsKey(asset.parentId)) {
+        nodeMap[asset.parentId]!.addChild(nodeMap[asset.id]!);
       } else {
-        root.addChild(AssetTree(asset.toNode()));
+        root.addChild(nodeMap[asset.id]!);
       }
     }
 
